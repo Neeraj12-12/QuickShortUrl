@@ -19,7 +19,7 @@ const ShortnerForm = ({
   const [loading, setLoading] = useState(false);
   const [showOptionalFields, setShowOptionalFields] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  console.log("SHORTFORM",process.env.NEXT_PUBLIC_BASE_URL)
+
   // Add validation states
   const [urlError, setUrlError] = useState("");
   const [slugError, setSlugError] = useState("");
@@ -121,12 +121,12 @@ const ShortnerForm = ({
     setLoading(true);
     try {
       
-      console.log("INSIDE",process.env.NEXT_PUBLIC_BASE_URL)
+ 
       const response = await fetch("/api/shorten", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: "1234",
+          userId: null,
           originalUrl,
           customSlug,
           expiresAt: expiresAt ? new Date(expiresAt).toISOString() : null,

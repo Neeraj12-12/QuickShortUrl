@@ -3,21 +3,27 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { signOut } from "next-auth/react";
+import { NextResponse } from "next/server";
 
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isSettingShow =
-    pathname === "/auth/login" ||
+    pathname === "/auth/signin" ||
     pathname === "/auth/signup" ||
-    pathname === "/";
-  const isLandingPage = pathname === "/";
+    pathname === "/" ||
+    pathname === "/auth/verify-request";
+   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
- console.log("in nav bar")
+
 const handleLogout = async () => {
-  console.log("hi ")
+  const response = NextResponse.json({ message: 'Logged out' });
+
+  // Deleting the cookie when logging out
+  response.cookies.delete('userId');
+
     await signOut({ redirect: true, callbackUrl: "/" }); // Logs out and redirects to home
   };
 
@@ -48,19 +54,13 @@ const handleLogout = async () => {
               </span>
             </div>
           </div>
-          {isLandingPage && (
+          {isSettingShow && (
             <div className="flex items-center space-x-4 relative">
               <button
-                className="px-4 py-2 text-purple-600 hover:text-purple-700 font-medium"
-                onClick={() => router.push("/auth/login")}
-              >
-                Login
-              </button>
-              <button
                 className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 font-medium"
-                onClick={() => router.push("/auth/signup")}
+                onClick={() => router.push("/auth/signin")}
               >
-                Sign Up
+                SignIn
               </button>
             </div>
           )}

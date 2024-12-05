@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 import getMongoClientPromise from '@/app/others/lib/mongodb';
+import { cookies } from 'next/headers';
 
 interface iRequest {
   originalUrl: string;
@@ -11,8 +12,11 @@ interface iRequest {
 
 export async function POST(req: Request) {
   try {
-    const { originalUrl, customSlug, expiresAt, userId }: iRequest = await req.json();
+    const { originalUrl, customSlug, expiresAt }: iRequest = await req.json();
 
+    const  cookie = await cookies();
+    const fetchedUserId = cookie.get("userId");
+    const userId = fetchedUserId?.value || null;
     // Check if the originalUrl is provided
     if (!originalUrl) {
       return NextResponse.json({ error: 'originalUrl is required' }, { status: 400 });

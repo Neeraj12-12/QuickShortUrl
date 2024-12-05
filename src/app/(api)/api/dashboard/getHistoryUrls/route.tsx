@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import getMongoClientPromise from '@/app/others/lib/mongodb';
+import { cookies } from 'next/headers';
+
+
 
 export async function GET(req: Request) {
   try {
-    // Extract userId from cookies
-    const cookieStore = cookies();
-    const userId = cookieStore.get('userId')?.value  || "1234";
+    
+     const  cookie = await cookies();
+    const finalUserId = cookie.get("userId");
+
+    const userId = finalUserId?.value || null;
 
     // Validate the userId
     if (!userId) {

@@ -6,7 +6,7 @@ const ErrorPage = () => {
   const router = useRouter();
 
   const handleLoginRedirect = () => {
-    router.push("/auth/login"); // Adjust the route if your login page is elsewhere
+    router.push("/auth/signin"); // Adjust the route if your login page is elsewhere
   };
 
   return (

@@ -11,7 +11,7 @@ export interface History {
 export async function getDb(): Promise<Db> {
   const client = new MongoClient(process.env.REACT_APP_MONGODB_URI!);
   await client.connect();
-  const db = client.db('urlShortener');
+  const db = client.db('url-shortener');
   return db;
 }
 

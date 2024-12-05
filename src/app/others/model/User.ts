@@ -1,5 +1,6 @@
 // models/User.ts
-import { MongoClient, Db } from "mongodb";
+import { object } from "framer-motion/client";
+import { MongoClient, Db, ObjectId } from "mongodb";
 
 export interface User {
   username: string;
@@ -7,7 +8,9 @@ export interface User {
   phone?: string;
   password?: string;
   createdAt: Date;
-  referBy: "emailPass" | "google";
+  isVerified: boolean,
+  image?: string | null,
+  referBy?: "emailPass" | "google";
 }
 
 export async function getDb(): Promise<Db> {
@@ -34,6 +37,23 @@ export async function findUserByEmail(email: string) {
 
 export async function findUserById(userId: string) {
   const db = await getDb();
-  const collection = db.collection<User>("users");
-  return collection.findOne({ _id: new MongoClient.ObjectID(userId) });
+  const collection = db.collection<User>("usersData");
+  return collection.findOne({ _id: new ObjectId(userId) });
+}
+
+
+export async function findUserByVerificationId(verificationToken: string) {
+  const db = await getDb();
+  const collection = db.collection<User>("usersData");
+  return collection.findOne({ verificationToken });
+}
+
+export async function updateUserVerificationStatus(userId: ObjectId, isVerified: boolean) {
+  const db = await getDb();
+  const collection = db.collection<User>("usersData");
+  
+  return collection.updateOne(
+    { _id: new ObjectId(userId) }, // Match the user by ID
+    { $set: { isVerified: isVerified } } // Update the "verified" field
+  );
 }

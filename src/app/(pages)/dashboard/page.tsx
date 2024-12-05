@@ -4,20 +4,20 @@ import ShortnerForm from "../../components/ShortnerForm";
 
 import { CircleX } from "lucide-react";
 import UrlCard from "../../components/dashboard/UrlCard";
-import { useSession } from "next-auth/react";
+
 
 const DashBoard = () => {
   const [isHisoryTabOpen, setIsHisoryTabOpen] = useState(false);
   const [historyUrls, setHistoryUrls] = useState([]);
   const [trigger, setTrigger] = useState(false);
 
-  const {data} = useSession();
-  console.log(data)
+  
+
   // Function to handle API success from the child
   const onChildApiSuccess = () => {
     setTrigger((prev) => !prev); // Toggle the trigger state
   };
-  console.log("FADSFA",process.env.NEXT_PUBLIC_BASE_URL)
+
   useEffect(() => {
     const getHistory = async () => {
       const response = await fetch("/api/dashboard/getHistoryUrls");

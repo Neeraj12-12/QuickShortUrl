@@ -37,31 +37,33 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+   console.log("here")
     setLoading(true);
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+ await signIn('email', { email: formData.email,callbackUrl:"/dashboard" });
+    // try {
+    //   const response = await fetch('/api/auth/signin', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(formData),
+    //   });
 
-      if (response.ok) {
-        const data = await response.json();
+    //   if (response.ok) {
+    //     const data = await response.json();
 
-        // Handle successful login
-        localStorage.setItem('token', data.token); // Store token if returned by API
+    //     // Handle successful login
+    //     localStorage.setItem('token', data.token); // Store token if returned by API
 
-        router.replace('/dashboard')
-      } else {
-        const data = await response.json();
-        setErrors({ submit: data.message || 'Login failed' });
-      }
-    } catch (error) {
-      setErrors({ submit: 'An error occurred. Please try again.' });
-    } finally {
-      setLoading(false);
-    }
+    //     router.replace('/dashboard')
+    //   } else {
+    //     const data = await response.json();
+    //     setErrors({ submit: data.message || 'Login failed' });
+    //   }
+    // } catch (error) {
+    //   setErrors({ submit: 'An error occurred. Please try again.' });
+    // } finally {
+    //   setLoading(false);
+    // }
+    setLoading(false)
   };
 
   const handleGoogleSignIn = () => {
